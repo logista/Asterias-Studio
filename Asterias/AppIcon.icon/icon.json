@@ -1,0 +1,217 @@
+{
+  "features" : [
+    "specular-location"
+  ],
+  "fill" : {
+    "linear-gradient" : [
+      "srgb:0.58611,0.00232,0.10065,1.00000",
+      "srgb:0.61355,0.45214,0.00000,1.00000"
+    ]
+  },
+  "groups" : [
+    {
+      "blend-mode" : "darken",
+      "blur-material" : 0.5,
+      "layers" : [
+        {
+          "fill" : {
+            "linear-gradient" : [
+              "display-p3:0.91011,0.64797,1.00000,1.00000",
+              "srgb:0.17843,0.36333,0.61909,1.00000"
+            ]
+          },
+          "image-name" : "Asterias-01-Light-Span-1.svg",
+          "name" : "Asterias-01-Light-Span-1"
+        },
+        {
+          "fill" : {
+            "linear-gradient" : [
+              "display-p3:0.91011,0.64797,1.00000,1.00000",
+              "srgb:0.17843,0.36333,0.61909,1.00000"
+            ],
+            "orientation" : {
+              "start" : {
+                "x" : 1,
+                "y" : 0.38673963903743314
+              },
+              "stop" : {
+                "x" : 0,
+                "y" : 0.8098679812834224
+              }
+            }
+          },
+          "image-name" : "Asterias-03-Light-Span-2.svg",
+          "name" : "Asterias-03-Light-Span-2"
+        },
+        {
+          "fill" : {
+            "linear-gradient" : [
+              "display-p3:0.91011,0.64797,1.00000,1.00000",
+              "srgb:0.17843,0.36333,0.61909,1.00000"
+            ],
+            "orientation" : {
+              "start" : {
+                "x" : 0.7271605861244019,
+                "y" : 0.9012410287081339
+              },
+              "stop" : {
+                "x" : 0.15176435406698566,
+                "y" : 0
+              }
+            }
+          },
+          "image-name" : "Asterias-05-Light-Span-3.svg",
+          "name" : "Asterias-05-Light-Span-3"
+        },
+        {
+          "fill" : {
+            "linear-gradient" : [
+              "display-p3:0.91011,0.64797,1.00000,1.00000",
+              "srgb:0.17843,0.36333,0.61909,1.00000"
+            ],
+            "orientation" : {
+              "start" : {
+                "x" : 0.2873056220095694,
+                "y" : 0.8625523325358851
+              },
+              "stop" : {
+                "x" : 0.8132476076555024,
+                "y" : 0.09502093301435406
+              }
+            }
+          },
+          "image-name" : "Asterias-07-Light-Span-4.svg",
+          "name" : "Asterias-07-Light-Span-4"
+        },
+        {
+          "fill" : {
+            "linear-gradient" : [
+              "display-p3:0.91011,0.64797,1.00000,1.00000",
+              "srgb:0.17843,0.36333,0.61909,1.00000"
+            ],
+            "orientation" : {
+              "start" : {
+                "x" : 0,
+                "y" : 0.3988552807486631
+              },
+              "stop" : {
+                "x" : 1,
+                "y" : 0.7884358288770054
+              }
+            }
+          },
+          "image-name" : "Asterias-09-Light-Span-5.svg",
+          "name" : "Asterias-09-Light-Span-5"
+        }
+      ],
+      "lighting" : "combined",
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.6
+      },
+      "specular" : "outside",
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.2
+      }
+    },
+    {
+      "blend-mode" : "normal",
+      "layers" : [
+        {
+          "blend-mode" : "normal",
+          "fill" : {
+            "linear-gradient" : [
+              "srgb:1.00000,0.57637,0.00000,1.00000",
+              "srgb:0.99942,0.98555,0.00000,1.00000"
+            ],
+            "orientation" : {
+              "start" : {
+                "x" : 0.17936976674641147,
+                "y" : 0.37879410885167464
+              },
+              "stop" : {
+                "x" : 0.6918548145933014,
+                "y" : 0.7779605263157895
+              }
+            }
+          },
+          "image-name" : "Asterias-02-Color-Span-1.svg",
+          "name" : "Asterias-02-Color-Span-1"
+        },
+        {
+          "fill" : {
+            "linear-gradient" : [
+              "srgb:0.99942,0.98555,0.00000,1.00000",
+              "srgb:0.00000,0.97680,0.00000,1.00000"
+            ]
+          },
+          "image-name" : "Asterias-04-Color-Span-2.svg",
+          "name" : "Asterias-04-Color-Span-2"
+        },
+        {
+          "fill" : {
+            "linear-gradient" : [
+              "srgb:0.00000,0.97680,0.00000,1.00000",
+              "extended-srgb:0.00000,0.53333,1.00000,1.00000"
+            ],
+            "orientation" : {
+              "start" : {
+                "x" : 1,
+                "y" : 0.29780629139072845
+              },
+              "stop" : {
+                "x" : -0.2297979797979798,
+                "y" : 0.3015573261589404
+              }
+            }
+          },
+          "image-name" : "Asterias-06-Color-Span-3.svg",
+          "name" : "Asterias-06-Color-Span-3"
+        },
+        {
+          "fill" : {
+            "linear-gradient" : [
+              "srgb:0.57919,0.12801,0.57269,1.00000",
+              "srgb:0.01680,0.19835,1.00000,1.00000"
+            ]
+          },
+          "image-name" : "Asterias-08-Color-Span-4.svg",
+          "name" : "Asterias-08-Color-Span-4"
+        },
+        {
+          "fill" : {
+            "linear-gradient" : [
+              "srgb:1.00000,0.25279,1.00000,1.00000",
+              "srgb:1.00000,0.14913,0.00000,1.00000"
+            ],
+            "orientation" : {
+              "start" : {
+                "x" : -0.4034090909090909,
+                "y" : 0.5950956937799043
+              },
+              "stop" : {
+                "x" : 1.1642120215311005,
+                "y" : 0.1943406100478469
+              }
+            }
+          },
+          "image-name" : "Asterias-10-Color-Span-5.svg",
+          "name" : "Asterias-10-Color-Span-5"
+        }
+      ],
+      "lighting" : "combined",
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.6
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.2
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "squares" : "shared"
+  }
+}

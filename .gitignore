@@ -1,0 +1,41 @@
+# Finder
+.DS_Store
+
+# Build products
+build/
+DerivedData/
+*.ipa
+*.app
+*.saver
+*.xcarchive
+*.dSYM.zip
+*.dSYM
+*.hmap
+
+# Xcode user settings
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+
+# Swift Package Manager
+.build/
+.swiftpm/
+Package.resolved
+
+# Dependency managers
+Carthage/Build/
+
+# fastlane output
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# Local environment
+.env
+.env.*
+!.env.example
+
+# Generated media
+Exports/
+Renders/

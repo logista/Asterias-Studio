@@ -1,0 +1,17 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+*.swift text eol=lf
+*.metal text eol=lf
+*.md text eol=lf
+*.sh text eol=lf
+*.plist text eol=lf
+*.pbxproj text eol=lf
+*.xcworkspacedata text eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.tiff binary
+*.icns binary
+*.pdf binary
