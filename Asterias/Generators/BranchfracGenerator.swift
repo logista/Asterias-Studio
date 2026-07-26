@@ -7,6 +7,18 @@ struct BranchfracRay: Sendable {
     let length: Double
     let ancestors: Int
     let children: [Int]
+    let directionX: Double
+    let directionY: Double
+
+    init(origin: GeneratorPoint, angle: Double, length: Double, ancestors: Int, children: [Int]) {
+        self.origin = origin
+        self.angle = angle
+        self.length = length
+        self.ancestors = ancestors
+        self.children = children
+        directionX = -sin(angle)
+        directionY = -cos(angle)
+    }
 }
 
 /// Random tree of branching rays used by the branch fractal generator.
@@ -25,46 +37,46 @@ struct BranchfracParams: Sendable {
 /// Produces fern-like branching distance fields.
 enum BranchfracGenerator {
     static func generate(_ point: GeneratorPoint, params: BranchfracParams) -> Double {
-        guard let root = params.rays.first else { return 0 }
-        let distance = valueFromRay(point, ray: root, params: params)
+        guard !params.rays.isEmpty else { return 0 }
+        let distance = nearestRayDistance(point, rays: params.rays)
         return 1.0 / ((distance * 10.0) + 1.0)
     }
 
-    private static func valueFromRay(_ point: GeneratorPoint, ray: BranchfracRay, params: BranchfracParams) -> Double {
-        var output = tangentRayDistance(point, ray: ray)
-        if output > 0.0001, ray.ancestors < BranchfracParams.maximumParents, !ray.children.isEmpty {
-            output = min(output, valueFromBranches(point, ray: ray, params: params))
+    private static func nearestRayDistance(_ point: GeneratorPoint, rays: [BranchfracRay]) -> Double {
+        var nearestSquared = Double.greatestFiniteMagnitude
+
+        for ray in rays {
+            let distanceSquared = rayDistanceSquared(point, ray: ray)
+            if distanceSquared < nearestSquared {
+                nearestSquared = distanceSquared
+                if nearestSquared <= 0.00000001 {
+                    return 0.0
+                }
+            }
         }
-        return output
+
+        return sqrt(nearestSquared)
     }
 
-    private static func valueFromBranches(_ point: GeneratorPoint, ray: BranchfracRay, params: BranchfracParams) -> Double {
-        var output = Double.greatestFiniteMagnitude
-        for childIndex in ray.children where params.rays.indices.contains(childIndex) {
-            output = min(output, valueFromRay(point, ray: params.rays[childIndex], params: params))
-        }
-        return output
-    }
+    private static func rayDistanceSquared(_ point: GeneratorPoint, ray: BranchfracRay) -> Double {
+        let relativeX = point.x - ray.origin.x
+        let relativeY = point.y - ray.origin.y
+        let projectedLength = (relativeX * ray.directionX) + (relativeY * ray.directionY)
 
-    private static func tangentRayDistance(_ point: GeneratorPoint, ray: BranchfracRay) -> Double {
-        let deltaX = ray.origin.x - point.x
-        let deltaY = ray.origin.y - point.y
-        let ratioAngle = deltaX == 0.0 && deltaY == 0.0 ? 0.0 : atan(deltaY / deltaX)
-        let pointAngle = ratioAngle + ray.angle
-        let hypotenuse = hypot(deltaY, deltaX)
-        var distance = abs(cos(pointAngle) * hypotenuse)
-        var leg = sin(pointAngle) * hypotenuse
+        if projectedLength <= 0.0 {
+            return (relativeX * relativeX) + (relativeY * relativeY)
+        }
+        if projectedLength >= ray.length {
+            let endX = ray.origin.x + ray.directionX * ray.length
+            let endY = ray.origin.y + ray.directionY * ray.length
+            let endRelativeX = point.x - endX
+            let endRelativeY = point.y - endY
+            return (endRelativeX * endRelativeX) + (endRelativeY * endRelativeY)
+        }
 
-        if ray.origin.x < point.x {
-            leg = -leg
-        }
-        if leg < 0.0 {
-            distance = hypot(distance, leg)
-        }
-        if leg > ray.length {
-            distance = hypot(distance, leg - ray.length)
-        }
-        return distance
+        let perpendicularX = relativeX - ray.directionX * projectedLength
+        let perpendicularY = relativeY - ray.directionY * projectedLength
+        return (perpendicularX * perpendicularX) + (perpendicularY * perpendicularY)
     }
 }
 
@@ -122,8 +134,8 @@ private struct BranchfracTreeBuilder {
     private mutating func makeBranch(from ray: BranchfracRay) -> BranchfracRay {
         BranchfracRay(
             origin: GeneratorPoint(
-                x: ray.origin.x - sin(ray.angle) * ray.length,
-                y: ray.origin.y - cos(ray.angle) * ray.length
+                x: ray.origin.x + ray.directionX * ray.length,
+                y: ray.origin.y + ray.directionY * ray.length
             ),
             angle: Double.random(in: 0..<Double.pi, using: &generator),
             length: ray.length * 0.7,
