@@ -178,7 +178,15 @@ enum AsteriasGenerators {
                     return map
                 }
             case .branchfrac:
-                break
+                if let map = AsteriasMetalBranchfracRenderer.shared?.generate(
+                    area: area,
+                    params: params.branchfrac,
+                    isTilingEnabled: isTilingEnabled,
+                    rollX: rollX,
+                    rollY: rollY
+                ) {
+                    return map
+                }
             case .rangefrac:
                 if let map = AsteriasMetalRangefracRenderer.shared?.generate(
                     area: area,
@@ -230,6 +238,17 @@ enum AsteriasGenerators {
                     return map
                 }
             }
+        }
+
+        if kind == .branchfrac,
+           let map = BranchfracGenerator.generate(
+               area: area,
+               params: params.branchfrac,
+               isTilingEnabled: isTilingEnabled,
+               rollX: rollX,
+               rollY: rollY
+           ) {
+            return map
         }
 
         var values = [Float](repeating: 0, count: pixelCount)

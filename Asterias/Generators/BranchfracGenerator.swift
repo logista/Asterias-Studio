@@ -23,7 +23,7 @@ struct BranchfracRay: Sendable {
 
 /// Random tree of branching rays used by the branch fractal generator.
 struct BranchfracParams: Sendable {
-    static let maximumRayCount = 128
+    static let maximumRayCount = 32
     static let maximumParents = 5
 
     let rays: [BranchfracRay]
@@ -37,16 +37,57 @@ struct BranchfracParams: Sendable {
 /// Produces fern-like branching distance fields.
 enum BranchfracGenerator {
     static func generate(_ point: GeneratorPoint, params: BranchfracParams) -> Double {
+        generate(x: point.x, y: point.y, params: params)
+    }
+
+    static func generate(
+        area: AsteriasArea,
+        params: BranchfracParams,
+        isTilingEnabled: Bool,
+        rollX: Int,
+        rollY: Int
+    ) -> PixelMap? {
+        guard area.width > 0, area.height > 0, !params.rays.isEmpty else { return nil }
+
+        let pixelCount = area.width * area.height
+        var values = [Float](repeating: 0, count: pixelCount)
+        let workerCount = pixelCount >= 65_536 ? min(max(1, ProcessInfo.processInfo.activeProcessorCount), area.height) : 1
+        let rowsPerWorker = Int(ceil(Double(area.height) / Double(workerCount)))
+
+        values.withUnsafeMutableBufferPointer { buffer in
+            DispatchQueue.concurrentPerform(iterations: workerCount) { workerIndex in
+                let startY = workerIndex * rowsPerWorker
+                let endY = min(startY + rowsPerWorker, area.height)
+                guard startY < endY else { return }
+
+                for y in startY..<endY {
+                    let mappedY = isTilingEnabled ? wrappedCoordinate(y + rollY, limit: area.height) : y
+                    let pointY = Double(mappedY) / Double(area.height)
+                    let rowOffset = y * area.width
+
+                    for x in 0..<area.width {
+                        let mappedX = isTilingEnabled ? wrappedCoordinate(x + rollX, limit: area.width) : x
+                        let pointX = Double(mappedX) / Double(area.width)
+                        buffer[rowOffset + x] = Float(generate(x: pointX, y: pointY, params: params))
+                    }
+                }
+            }
+        }
+
+        return PixelMap(width: area.width, height: area.height, values: values)
+    }
+
+    private static func generate(x: Double, y: Double, params: BranchfracParams) -> Double {
         guard !params.rays.isEmpty else { return 0 }
-        let distance = nearestRayDistance(point, rays: params.rays)
+        let distance = nearestRayDistance(x: x, y: y, rays: params.rays)
         return 1.0 / ((distance * 10.0) + 1.0)
     }
 
-    private static func nearestRayDistance(_ point: GeneratorPoint, rays: [BranchfracRay]) -> Double {
+    private static func nearestRayDistance(x: Double, y: Double, rays: [BranchfracRay]) -> Double {
         var nearestSquared = Double.greatestFiniteMagnitude
 
         for ray in rays {
-            let distanceSquared = rayDistanceSquared(point, ray: ray)
+            let distanceSquared = rayDistanceSquared(x: x, y: y, ray: ray)
             if distanceSquared < nearestSquared {
                 nearestSquared = distanceSquared
                 if nearestSquared <= 0.00000001 {
@@ -58,9 +99,13 @@ enum BranchfracGenerator {
         return sqrt(nearestSquared)
     }
 
-    private static func rayDistanceSquared(_ point: GeneratorPoint, ray: BranchfracRay) -> Double {
-        let relativeX = point.x - ray.origin.x
-        let relativeY = point.y - ray.origin.y
+    private static func wrappedCoordinate(_ value: Int, limit: Int) -> Int {
+        value < limit ? value : value - limit
+    }
+
+    private static func rayDistanceSquared(x: Double, y: Double, ray: BranchfracRay) -> Double {
+        let relativeX = x - ray.origin.x
+        let relativeY = y - ray.origin.y
         let projectedLength = (relativeX * ray.directionX) + (relativeY * ray.directionY)
 
         if projectedLength <= 0.0 {
@@ -69,8 +114,8 @@ enum BranchfracGenerator {
         if projectedLength >= ray.length {
             let endX = ray.origin.x + ray.directionX * ray.length
             let endY = ray.origin.y + ray.directionY * ray.length
-            let endRelativeX = point.x - endX
-            let endRelativeY = point.y - endY
+            let endRelativeX = x - endX
+            let endRelativeY = y - endY
             return (endRelativeX * endRelativeX) + (endRelativeY * endRelativeY)
         }
 
