@@ -11,6 +11,9 @@ struct AsteriasApp: App {
                 .frame(minWidth: 960, minHeight: 660)
         }
         .windowResizability(.contentMinSize)
+        .commands {
+            AsteriasCommands()
+        }
     }
 }
 
@@ -874,7 +877,7 @@ private extension JSONEncoder {
     }
 }
 
-private extension Bundle {
+extension Bundle {
     var appBuildDescription: String {
         let version = object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
         let build = object(forInfoDictionaryKey: "CFBundleVersion") as? String

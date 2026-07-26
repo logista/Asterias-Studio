@@ -23,12 +23,10 @@ struct AsteriasCommands: Commands {
 }
 
 enum AsteriasHelp {
-    private static let helpDirectory = "Help"
-
     @MainActor
     static func openAboutPanel() {
         let credits = NSAttributedString(
-            string: "Asterias Studio creates layered procedural images from repeatable generator recipes. Exported PNG and TIFF files include recipe metadata, so a generated image can be dropped back into the app to restore its settings.",
+            string: "©2026 Barbara Tozier assisted by Codex.\nBased on work ©1999 Mars Saxman\nLicenced under GPL2.0",
             attributes: [
                 .font: NSFont.systemFont(ofSize: NSFont.smallSystemFontSize),
                 .foregroundColor: NSColor.secondaryLabelColor
@@ -43,7 +41,7 @@ enum AsteriasHelp {
     }
 
     static func openHelpPage(named resourceName: String) {
-        guard let url = Bundle.main.url(forResource: resourceName, withExtension: "html", subdirectory: helpDirectory) else {
+        guard let url = Bundle.main.url(forResource: resourceName, withExtension: "html") else {
             NSSound.beep()
             return
         }
