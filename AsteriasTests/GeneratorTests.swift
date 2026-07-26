@@ -6,6 +6,7 @@ import Testing
 struct GeneratorTests {
     @Test func generatorMetadataIsStable() {
         #expect(GeneratorKind.sortedByName.map(\.label) == [
+            "Branchfrac",
             "Bubble",
             "Coswave",
             "Flame",
@@ -50,6 +51,7 @@ struct GeneratorTests {
             Rangefrac.generate(point, params: handmadeParams.rangefrac),
             Flatwave.generate(point, params: handmadeParams.flatwave),
             BubbleGenerator.generate(point, params: handmadeParams.bubble),
+            BranchfracGenerator.generate(point, params: handmadeParams.branchfrac),
             JuliaGenerator.generate(point, params: handmadeParams.julia),
             VoronoiGenerator.generate(point, params: handmadeParams.voronoi),
             FlameGenerator.generate(point, params: handmadeParams.flame)
@@ -67,12 +69,15 @@ struct GeneratorTests {
         let rangefrac = RangefracParams.random(using: &generator)
         let flatwave = FlatwaveParams.random(using: &generator)
         let bubble = BubbleParams.random(using: &generator)
+        let branchfrac = BranchfracParams.random(using: &generator)
         let voronoi = VoronoiParams.random(using: &generator)
         let flame = FlameParams.random(using: &generator)
 
         #expect(rangefrac.data.count == RangefracParams.matrixSize * RangefracParams.matrixSize)
         #expect((2...4).contains(flatwave.packets.count))
         #expect((8..<32).contains(bubble.bubbles.count))
+        #expect(!branchfrac.rays.isEmpty)
+        #expect(branchfrac.rays.count <= BranchfracParams.maximumRayCount)
         #expect((12...48).contains(voronoi.cells.count))
         #expect((3...7).contains(flame.transforms.count))
     }
@@ -123,6 +128,12 @@ private let handmadeParams = GeneratorParams(
     bubble: BubbleParams(
         bubbles: [
             Bubble(scale: 0.3, squish: 1.2, angle: 0.4, origin: GeneratorPoint(x: 0.45, y: 0.45))
+        ]
+    ),
+    branchfrac: BranchfracParams(
+        rays: [
+            BranchfracRay(origin: GeneratorPoint(x: 0.5, y: 0.5), angle: 0.2, length: 0.2, ancestors: 0, children: [1]),
+            BranchfracRay(origin: GeneratorPoint(x: 0.46, y: 0.30), angle: 1.0, length: 0.14, ancestors: 1, children: [])
         ]
     ),
     julia: JuliaParams(

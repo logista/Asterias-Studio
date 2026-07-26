@@ -7,6 +7,7 @@ enum GeneratorKind: String, CaseIterable, Sendable {
     case rangefrac
     case flatwave
     case bubble
+    case branchfrac
     case julia
     case voronoi
     case flame
@@ -18,6 +19,7 @@ enum GeneratorKind: String, CaseIterable, Sendable {
         case .rangefrac: "Rangefrac"
         case .flatwave: "Flatwave"
         case .bubble: "Bubble"
+        case .branchfrac: "Branchfrac"
         case .julia: "Julia"
         case .voronoi: "Voronoi"
         case .flame: "Flame"
@@ -35,6 +37,7 @@ enum GeneratorKind: String, CaseIterable, Sendable {
         case .rangefrac: "Soft recursive terrain-like fields."
         case .flatwave: "Layered linear waves and interference."
         case .bubble: "Rounded cells, blobs, and overlapping lenses."
+        case .branchfrac: "Fern-like branching distance fields."
         case .julia: "Fractal curls and escape-time contours."
         case .voronoi: "Cellular regions, borders, and distance ridges."
         case .flame: "Luminous transformed geometric filaments."
@@ -48,14 +51,14 @@ enum GeneratorKind: String, CaseIterable, Sendable {
 
     var isAntiAliased: Bool {
         switch self {
-        case .rangefrac, .bubble, .voronoi: true
+        case .rangefrac, .bubble, .branchfrac, .voronoi: true
         case .coswave, .spinflake, .flatwave, .julia, .flame: false
         }
     }
 
     var isSeamless: Bool {
         switch self {
-        case .spinflake, .rangefrac, .bubble, .voronoi, .flame: true
+        case .spinflake, .rangefrac, .bubble, .branchfrac, .voronoi, .flame: true
         case .coswave, .flatwave, .julia: false
         }
     }
@@ -106,6 +109,7 @@ struct GeneratorParams: Sendable {
     let rangefrac: RangefracParams
     let flatwave: FlatwaveParams
     let bubble: BubbleParams
+    let branchfrac: BranchfracParams
     let julia: JuliaParams
     let voronoi: VoronoiParams
     let flame: FlameParams
@@ -117,6 +121,7 @@ struct GeneratorParams: Sendable {
             rangefrac: RangefracParams.random(using: &generator),
             flatwave: FlatwaveParams.random(using: &generator),
             bubble: BubbleParams.random(using: &generator),
+            branchfrac: BranchfracParams.random(using: &generator),
             julia: JuliaParams.random(using: &generator),
             voronoi: VoronoiParams.random(using: &generator),
             flame: FlameParams.random(using: &generator)
@@ -172,6 +177,8 @@ enum AsteriasGenerators {
                 ) {
                     return map
                 }
+            case .branchfrac:
+                break
             case .rangefrac:
                 if let map = AsteriasMetalRangefracRenderer.shared?.generate(
                     area: area,
@@ -378,6 +385,8 @@ enum AsteriasGenerators {
             Flatwave.generate(point, params: params.flatwave)
         case .bubble:
             BubbleGenerator.generate(point, params: params.bubble)
+        case .branchfrac:
+            BranchfracGenerator.generate(point, params: params.branchfrac)
         case .julia:
             JuliaGenerator.generate(point, params: params.julia)
         case .voronoi:
