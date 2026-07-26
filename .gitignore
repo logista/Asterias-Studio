@@ -39,3 +39,6 @@ fastlane/test_output
 # Generated media
 Exports/
 Renders/
+
+# Local source references
+starfish-1.1/
