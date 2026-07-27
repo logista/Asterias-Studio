@@ -36,6 +36,7 @@ Asterias includes these procedural generators:
 
 | Generator | Visual Character |
 | --- | --- |
+| Branchfrac | Fern-like branching distance fields |
 | Bubble | Rounded cells, blobs, and overlapping lenses |
 | Coswave | Radial rings and warped wave bands |
 | Flame | Luminous transformed geometric filaments |
