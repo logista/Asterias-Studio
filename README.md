@@ -1,3 +1,5 @@
+<img width="512" height="512" alt="Asterias-512x512-20260726-171109-Original" src="https://github.com/user-attachments/assets/57aa2e5f-d43b-4d25-9ab3-37d37f7b2c4c" /><img width="512" height="512" alt="Asterias-512x512-20260726-171846-Original" src="https://github.com/user-attachments/assets/438c2507-0802-42e6-ab62-d488bcf8869d" />
+
 # Asterias
 
 Asterias is a macOS SwiftUI app for creating layered procedural artwork. It builds images by combining several generator families into color layers, optionally using generated masks, then renders the result as a preview that can be exported as an image.
@@ -47,6 +49,8 @@ Asterias includes these procedural generators:
 | Voronoi | Cellular regions, borders, and distance ridges |
 
 The app randomly combines enabled generators as image layers and, for some layers, as masks. This produces more varied results than a single generator on its own.
+
+<img width="1392" height="1024" alt="Screenshot 2026-07-27 at 9 05 32 AM" src="https://github.com/user-attachments/assets/22c67375-0799-43b8-9b04-60e809cccb29" />
 
 
 ## Using The App
